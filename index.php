@@ -41,13 +41,23 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Accueil</a>
+                            <a class="nav-link" href="../index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./views/movies.php">Ajouter un film</a>
+                            <a class="nav-link active"  aria-current="page" href="./views/update.php">Publier un film</a>
+                        </li>
+                    </ul>
+                
+                    <ul class="navbar-nav ms-auto">
+                    <?= $_SESSION && $_SESSION["username"] ? "<span>Bienvenue {$_SESSION["username"]} !</span>" : "" ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./views/login.php">Se connecter</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active"  aria-current="page" href="./views/register.php">S'inscrire</a>
                         </li>
                     </ul>
                 </div>
@@ -68,7 +78,8 @@
         <section class="container d-flex justify-content-center">
             <?php
             foreach ($movies as $movie) :
-                $category = $categoryController->get($movie->getCategory_id())
+                $category = $categoryController->get($movie->getCategory_id());
+                $releaseDate = new DateTime($movie->getRelease_date());
             ?>
                 <div class="card mx-3" style="width: 18rem;">
                     <img src="<?= $movie->getImage_url() ?>" class="card-img-top" alt="<?= $movie->getTitle() ?>">
@@ -77,7 +88,7 @@
                         <h6 class="card-subtitle mb-2 text-muted"><?= $movie->getRelease_date() ?> - <?= $movie->getDirector() ?></h6>
                         <p class="card-text"><?= $movie->getDescription() ?></p>
                         <footer class="blockquote-footer" style="color: <?= $category->getColor() ?>"><?= $category->getName() ?></footer>
-                        <a href="#" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="./views/update.php?id=<?= $movie->getId() ?>" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="./views/delete.php?id=<?= $movie->getId() ?>" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer"><i class="fa-solid fa-trash-can"></i></a>
                     </div>
                 </div>
